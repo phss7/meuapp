@@ -1,44 +1,61 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View } from 'react-native';
+import { Alert, StyleSheet, View, } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Button, Input, Text, Header, icon } from 'react-native-elements';
 import { useState } from 'react';
-
+import { initializeApp } from "firebase/app";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import FlashMessage from "react-native-flash-message";
+import { showMessage, hideMessage } from "react-native-flash-message";
 
 
 export default function App() {
 
-  const [nome, setNome] = useState(null)
-  const [cpf, setCpf] = useState(null)
-  const [email, setEmail] = useState(null)
-  const [password, setPassword] = useState(null)
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCcHkr8IxdShZZkhtlCLgxuv-O6UlAQzLc",
+    authDomain: "app-pos-978d2.firebaseapp.com",
+    projectId: "app-pos-978d2",
+    storageBucket: "app-pos-978d2.appspot.com",
+    messagingSenderId: "36916146115",
+    appId: "1:36916146115:web:15751c5320a22bf5771776"
+  };
+
+  const auth = getAuth();
+createUserWithEmailAndPassword(auth, email, password)
+  .then((userCredential) => {
+    // Signed in
+    showMessage({
+      message: "Registro Adicionado com Sucesso!!",
+      type: "success",
+    });
+    Alert.alert("Sucesso", "Cadastro bem sucedido")
+    console.log('Cadastro realizado com sucesso');
+    const user = userCredential.user;
+      isVisible: true; 
+      Message: "Cadastro realizado com sucesso"
+      // ...
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // ..
+  });
+
+  
+
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+
 
   return (
     <View style={styles.container}>
-    <header
-      leftComponent={{ icon: 'menu', color:  '#afff' }}
-      centerComponent={{ text: 'Usuário', style: { color: '#afff '} }}
-      rightComponent={{ icon: 'home', color: '#afff' }}
-
-    /> 
-      
       <Text h1></Text>
-      <Input
-        placeholder="nome"
-        leftIcon={{ type: 'font-awesome', name: '' }}
-        onChangeText={value => setNome(value)}
-        
-        />
-
-      <Input
-        placeholder="cpf"
-        leftIcon={{ type: 'font-awesome', name: '' }}
-        onChangeText={value => setCpf(value)}
-        keyboardType="number-pad"
-        
-        />
-
+      
       <Input
         placeholder="email"
         leftIcon={{ type: 'font-awesome', name: '' }}

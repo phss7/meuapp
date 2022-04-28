@@ -3,26 +3,77 @@ import { StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Button, Input, Text, Header, icon } from 'react-native-elements';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { initializeApp } from "firebase/app";
+import axios from 'axios';
+import FlashMessage from "react-native-flash-message";
+import { showMessage, hideMessage } from "react-native-flash-message";
 
 
+export default function App({ route,navigation }) {
 
-export default function App() {
+  const [getNome,setNome] = useState([]);
+  const [getEmail,setEmail] = useState([]);
+  const [getTelefone,setTelefone] = useState([]);
+  const [getCpf,setCpf] = useState([]);
+  const [getId,setId] = useState([]);
+  const [getBotao,setBotao] = useState([]);
 
-  const [nome, setNome] = useState(null)
-  const [email, setEmail] = useState(null)
-  const [phone, setPhone] = useState(null)
+  
+
+  useEffect(()=>{
+    
+    if(route.params){
+      const { nome } =  route.params 
+      const { cpf } = route.params 
+      const { telefone } = route.params
+      const { id } = route.params
+      const { botao } = route.params
+  
+        setNome(nome);
+        setCpf(email);
+        setTelefone(telefone);
+        setCpf(Cpf);
+        setId(id);
+        setBotao(botao);
+    }
+  }, [])
+  async function inserirDados(){
+
+    await axios.post('http://professornilson.com/testeservico/clientes', {
+        nome: getNome,
+        cpf: getCpf,
+        telefone: getTelefone
+      })
+      .then(function (response) {
+        setNome('');
+        setCpf('');
+        setTelefone('');
+        setId('');
+        showMessage({
+          message: "Registro Adicionado com Sucesso!!",
+          type: "success",
+        });
+        //navigation.navigate('Cadastro')
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+     
+}
+
+    function mostrarDados(){
+
+        navigation.navigate('CadastroScreen')
+         
+      }
+
 
   return (
     <View style={styles.container}>
-    <header
-      leftComponent={{ icon: 'menu', color:  '#afff' }}
-      centerComponent={{ text: 'Contato', style: { color: '#afff '} }}
-      rightComponent={{ icon: 'home', color: '#afff' }}
-
-    /> 
       
-      <Text h1>Contato</Text>
+      <Text h1></Text>
       <Input
         placeholder="Nome"
         leftIcon={{ type: 'font-awesome', name: '' }}
@@ -31,16 +82,16 @@ export default function App() {
         />
 
       <Input
-        placeholder="Email"
+        placeholder="CPF"
         leftIcon={{ type: 'font-awesome', name: '' }}
-        onChangeText={value => setEmail(value)}
+        onChangeText={value => setCpf(value)}
         keyboardType="email-address"
         />
 
       <Input
         placeholder="Telefone"
         leftIcon={{ type: 'font-awesome', name: '' }}
-        onChangeText={value => setPhone(value)}
+        onChangeText={value => setTelefone(value)}
         />
 
 <Button
@@ -50,8 +101,8 @@ export default function App() {
                   marginHorizontal: 50,
                   marginVertical: 10,
                 }}
+                onPress={() => inserirDados()}
               />
-
 
     </View>
   );

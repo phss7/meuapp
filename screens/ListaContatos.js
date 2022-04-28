@@ -1,15 +1,33 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, ScrollView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Button, Input, Text, Header, icon, Image, TabView, Tab } from 'react-native-elements';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { KeyboardAvoidingView } from 'native-base';
 import { enableExpoCliLogging } from 'expo/build/logs/Logs';
 import { ListItem, Avatar } from 'react-native-elements'
+import { initializeApp } from "firebase/app";
+import axios from 'axios';
 
 
 export default function lista({route, navigation}) {
+
+  const [dados,setDados] = useState([]);
+
+  useEffect(()=>{
+      function resgatarDados(){
+        axios.get('http://professornilson.com/testeservico/clientes')
+        .then(function (response) {
+          setDados(response.data);
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+      }
+      resgatarDados();
+  })
 
   const list = [
     {
@@ -67,32 +85,37 @@ export default function lista({route, navigation}) {
 
   return (
     <View>
-      <Tab.Item
-        title="+"
-        buttonStyle={(active) => {
-          backgroundColor: active ? "red" : "blue";
-        }}
-        onPress={() => navigation.navigate('CadastroContato')}
-      />
+      <ScrollView>
+    <Header
+     
+      centerComponent={{ text: 'Lista de Contatos', style: { color: '#fff' } }}
+      rightComponent={{ icon: 'plus', type: 'font-awesome',  color: '#fff',  onPress:() => navigation.navigate('Contato')  }}
+    />
+  
 
-      <header
-      leftComponent={{ icon: 'menu', color:  '#afff' }}
-      centerComponent={{ text: 'Lista de Contato', style: { color: '#afff '} }}
-      rightComponent={{ icon: 'home', color: '#afff' }}
-
-    /> 
   {
-    list.map((l, i) => (
+    dados.map((l, i) => (
       <ListItem key={i} bottomDivider>
-        <Avatar source={{uri: l.avatar_url}} />
+        <Avatar source={{uri: 'https://cdn.pixabay.com/photo/2018/08/28/13/29/avatar-3637561_960_720.png'}} />
+        
         <ListItem.Content>
-          <ListItem.Title>{l.name}</ListItem.Title>
-          <ListItem.Subtitle>{l.subtitle}</ListItem.Subtitle>
+        <TouchableOpacity
+                onPress={() => navigation.navigate('AEContato', {
+                nome:l.nome,
+                telefone:l.telefone,
+                cpf:l.cpf,
+                id:l.id,
+                alterar:true 
+              })}  
+                >
+          <ListItem.Title>{l.nome}</ListItem.Title>
+          <ListItem.Subtitle>{l.telefone}</ListItem.Subtitle>
+          </TouchableOpacity>
         </ListItem.Content>
       </ListItem>
     ))
   }
-
+    </ScrollView>
 </View>
   );
 

@@ -3,15 +3,74 @@ import { StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Button, Input, Text, Header, icon } from 'react-native-elements';
-import { useState } from 'react';
+import { useState, useEffect, TouchableOpacity } from 'react';
+import { initializeApp } from "firebase/app";
+import axios from 'axios';
 
 
+export default function App({ route,navigation }) {
 
-export default function App() {
+  const [getnome, setNome] = useState('');
+  const [getemail, setEmail] = useState('');
+  const [gettelefone, setTelefone] = useState('');
+  const [getid,setId] = useState();
+  
 
-  const [nome, setNome] = useState(null)
-  const [email, setEmail] = useState(null)
-  const [phone, setPhone] = useState(null)
+  useEffect(()=>{
+    if(route.params){
+      const { nome } =  route.params 
+      const { email } = route.params 
+      const { telefone } = route.params
+      const { id } = route.params
+     
+  
+        setNome(nome);
+        setTelefone(telefone);
+        setEmail(email);
+        setId(id);
+    }
+        
+    }, [])
+
+  function alterarDados(){
+    axios.put('http://professornilson.com/testeservico/'+getid,
+          {
+              nome: getnome,
+              email: getemail,
+              telefone: gettelefone
+              }).then(function (response) {
+                setNome('');
+                setEmail('');
+                setTelefone('');
+                setId('');
+              console.log(response);
+              }).catch(function (error) {
+              console.log(error);
+
+              });
+
+  }
+
+  function listarDados(){
+    navigation.navigate('CadastroScreen')
+  }
+
+  function alterarDados(){
+
+    axios.delete('http://professornilson.com/testeservico/clientes/'+getid)
+    
+    .then(function (response) {
+    console.log(response);
+    }).catch(function (error) {
+    console.log(error);
+    
+    });
+    
+    }
+  
+  function excluirDados(){
+    navigation.navigate('CadastroScreen')
+  }
 
   return (
     <View style={styles.container}>
@@ -40,7 +99,7 @@ export default function App() {
       <Input
         placeholder="Telefone"
         leftIcon={{ type: 'font-awesome', name: '' }}
-        onChangeText={value => setPhone(value)}
+        onChangeText={value => setTelefone(value)}
         />
 
 <Button
@@ -50,6 +109,7 @@ export default function App() {
                   marginHorizontal: 50,
                   marginVertical: 10,
                 }}
+                onPress={() => alterarDados()}
               />
 <Button
                 title={'Excluir'}
@@ -59,6 +119,7 @@ export default function App() {
                   marginHorizontal: 50,
                   marginVertical: 10,
                 }}
+                onPress={() => excluirDados()}
               />
     </View>
   );
