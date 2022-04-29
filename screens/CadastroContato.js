@@ -54,7 +54,7 @@ export default function App({ route,navigation }) {
           message: "Registro Adicionado com Sucesso!!",
           type: "success",
         });
-        //navigation.navigate('Cadastro')
+        Alert.alert("Cadastro realizado com sucesso")
         console.log(response);
       })
       .catch(function (error) {
@@ -62,6 +62,12 @@ export default function App({ route,navigation }) {
       });
      
 }
+const CustomAlert = ( realizado ) => {
+  <CustomAlert
+       modalVisible={modalVisible}
+       setModalVisible={setModalVisible}
+       />
+ }
 
     function mostrarDados(){
 
@@ -69,6 +75,8 @@ export default function App({ route,navigation }) {
          
       }
 
+
+     
 
   return (
     <View style={styles.container}>
@@ -85,7 +93,6 @@ export default function App({ route,navigation }) {
         placeholder="CPF"
         leftIcon={{ type: 'font-awesome', name: '' }}
         onChangeText={value => setCpf(value)}
-        keyboardType="email-address"
         />
 
       <Input

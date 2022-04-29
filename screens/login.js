@@ -27,6 +27,7 @@ export default function loginFirebase({route, navigation}) {
           const auth = getAuth();
       signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
+          Alert.alert("Login realizado")
           console.log('Conectado');
           navigation.navigate('ListaContatos');
           // Signed in
@@ -42,6 +43,13 @@ export default function loginFirebase({route, navigation}) {
   
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
+
+  const CustomAlert = ( realizado ) => {
+    <CustomAlert
+         modalVisible={modalVisible}
+         setModalVisible={setModalVisible}
+         />
+   }
  
   
   return (
@@ -91,8 +99,8 @@ export default function loginFirebase({route, navigation}) {
                  backgroundColor: '#ff0000', 
                }}
                onPress={() => navigation.navigate('Usuário')}
-
              />
+             
              
     </View>
   );

@@ -11,7 +11,7 @@ import axios from 'axios';
 export default function App({ route,navigation }) {
 
   const [getnome, setNome] = useState('');
-  const [getemail, setEmail] = useState('');
+  const [getcpf, setCpf] = useState('');
   const [gettelefone, setTelefone] = useState('');
   const [getid,setId] = useState();
   
@@ -19,14 +19,14 @@ export default function App({ route,navigation }) {
   useEffect(()=>{
     if(route.params){
       const { nome } =  route.params 
-      const { email } = route.params 
+      const { cpf } = route.params 
       const { telefone } = route.params
       const { id } = route.params
      
   
         setNome(nome);
+        setCpf(cpf);
         setTelefone(telefone);
-        setEmail(email);
         setId(id);
     }
         
@@ -36,11 +36,11 @@ export default function App({ route,navigation }) {
     axios.put('http://professornilson.com/testeservico/'+getid,
           {
               nome: getnome,
-              email: getemail,
+              cpf: getcpf,
               telefone: gettelefone
               }).then(function (response) {
                 setNome('');
-                setEmail('');
+                setCpf('');
                 setTelefone('');
                 setId('');
               console.log(response);
@@ -74,27 +74,19 @@ export default function App({ route,navigation }) {
 
   return (
     <View style={styles.container}>
-    <header
-      leftComponent={{ icon: 'menu', color:  '#afff' }}
-      centerComponent={{ text: 'Contato', style: { color: '#afff '} }}
-      rightComponent={{ icon: 'home', color: '#afff' }}
-
-    /> 
       
       <Text h1>Contato</Text>
       <Input
         placeholder="Nome"
         leftIcon={{ type: 'font-awesome', name: '' }}
-        onChangeText={value => setNome(value)}
-        
+        onChangeText={value => setNome(value)} 
         />
 
       <Input
-        placeholder="Email"
-        leftIcon={{ type: 'font-awesome', name: '' }}
-        onChangeText={value => setEmail(value)}
-        keyboardType="email-address"
-        />
+       placeholder="CPF"
+       leftIcon={{ type: 'font-awesome', name: '' }}
+       onChangeText={value => setCpf(value)}
+       />
 
       <Input
         placeholder="Telefone"

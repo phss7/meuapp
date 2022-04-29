@@ -32,7 +32,7 @@ createUserWithEmailAndPassword(auth, email, password)
       message: "Registro Adicionado com Sucesso!!",
       type: "success",
     });
-    Alert.alert("Sucesso", "Cadastro bem sucedido")
+    Alert.alert( "Usuário cadastrado")
     console.log('Cadastro realizado com sucesso');
     const user = userCredential.user;
       isVisible: true; 
@@ -50,8 +50,12 @@ createUserWithEmailAndPassword(auth, email, password)
 
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
-
-
+const CustomAlert = ( realizado ) => {
+ <CustomAlert
+      modalVisible={modalVisible}
+      setModalVisible={setModalVisible}
+      />
+}
   return (
     <View style={styles.container}>
       <Text h1></Text>

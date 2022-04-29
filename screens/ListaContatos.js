@@ -12,7 +12,7 @@ import axios from 'axios';
 
 
 export default function lista({route, navigation}) {
-
+  
   const [dados,setDados] = useState([]);
 
   useEffect(()=>{
@@ -84,38 +84,37 @@ export default function lista({route, navigation}) {
   ]
 
   return (
-    <View>
-      <ScrollView>
-    <Header
-     
-      centerComponent={{ text: 'Lista de Contatos', style: { color: '#fff' } }}
-      rightComponent={{ icon: 'plus', type: 'font-awesome',  color: '#fff',  onPress:() => navigation.navigate('Contato')  }}
-    />
+    <View >
+          <ScrollView>
+        <Header
+        
+          centerComponent={{ text: 'Lista de Contatos', style: { color: '#fff' } }}
+          rightComponent={{ icon: 'plus', type: 'font-awesome',  color: '#fff',  onPress:() => navigation.navigate('Contato')  }}
+        />
   
 
-  {
-    dados.map((l, i) => (
-      <ListItem key={i} bottomDivider>
-        <Avatar source={{uri: 'https://cdn.pixabay.com/photo/2018/08/28/13/29/avatar-3637561_960_720.png'}} />
-        
-        <ListItem.Content>
-        <TouchableOpacity
-                onPress={() => navigation.navigate('AEContato', {
-                nome:l.nome,
-                telefone:l.telefone,
-                cpf:l.cpf,
-                id:l.id,
-                alterar:true 
-              })}  
-                >
-          <ListItem.Title>{l.nome}</ListItem.Title>
-          <ListItem.Subtitle>{l.telefone}</ListItem.Subtitle>
-          </TouchableOpacity>
-        </ListItem.Content>
-      </ListItem>
-    ))
-  }
-    </ScrollView>
+      {
+        dados.map((l, i) => (
+          <ListItem key={i} bottomDivider>
+            <Avatar source={{uri: 'https://cdn.pixabay.com/photo/2018/08/28/13/29/avatar-3637561_960_720.png'}} />
+            
+            <ListItem.Content>
+            <TouchableOpacity
+                    onPress={() => navigation.navigate('Alterar', {
+                    nome:l.nome,
+                    cpf:l.cpf,
+                    telefone:l.telefone,
+                    id:l.id
+                  })}  
+                    >
+              <ListItem.Title>{l.nome}</ListItem.Title>
+              <ListItem.Subtitle>{l.telefone}</ListItem.Subtitle>
+              </TouchableOpacity>
+            </ListItem.Content>
+          </ListItem>
+        ))
+      }
+        </ScrollView>
 </View>
   );
 

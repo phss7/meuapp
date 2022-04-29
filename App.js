@@ -25,7 +25,7 @@ export default function App() {
         <Stack.Screen name="ListaContatos" component={ListaContatos} options={{ headerShown: false }} />
         <Stack.Screen name="Usuário" component={CadastroScreen} />
         <Stack.Screen name="Contato" component={CadastroContato} />
-        <Stack.Screen name="AEContato" component={AEContato} />
+        <Stack.Screen name="Alterar" component={AEContato} />
         <Stack.Screen name="mostrarDados" component={CadastroScreen} />
 
 
